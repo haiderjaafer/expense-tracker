@@ -1,11 +1,23 @@
+import AddTransaction from "@/components/AddTransaction";
+import Guest from "@/components/Guest";
+import { currentUser } from "@clerk/nextjs/server";
 
 
-export default function Home() {
+const   HomePage = async() =>  {
+
+  const user = await currentUser();
+
+  if (!user) {
+    return <Guest />;
+  }
+
   return (
  <main>
-  <h1>expnse tracker project</h1>
+  <h2>welcome , {user.firstName}</h2>
 
-  
+  <AddTransaction/>
  </main>
   );
 }
+
+export default HomePage;

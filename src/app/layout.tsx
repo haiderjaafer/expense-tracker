@@ -4,7 +4,8 @@ import "./globals.css";
 const roboto = Roboto({ weight: '400', subsets: ['latin'] });
 import { ClerkProvider } from '@clerk/nextjs';
 import Header from "@/components/Header";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: 'Expense Tracker',
@@ -26,6 +27,7 @@ export default function RootLayout({
       >
          <Header />
          <main className='container'>{children}</main>
+         <ToastContainer />
       </body>
     </html>
     </ClerkProvider>
