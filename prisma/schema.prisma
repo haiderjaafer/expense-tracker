@@ -1,0 +1,37 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")   // .env is located at root folder project outside src folder
+}
+
+model User {
+  id String @id @default(uuid())
+  clerkUserId String @unique              //FOREIGN KEY ("userId") REFERENCES "User"("clerkUserId")
+  email String @unique
+  name String?
+  imageUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  transactions  Transaction[]
+}
+
+model Transaction {
+  id  String @id @default(uuid())
+  text  String
+  amount  Float
+  // Relation to user
+  userId  String                 //FOREIGN KEY ("userId") REFERENCES "User"("clerkUserId")
+  user User @relation(fields: [userId], references: [clerkUserId], onDelete: Cascade)  // relationship pk - fk
+  createdAt DateTime @default(now())
+  @@index([userId])
+}
+
+// npx prisma generate   // this will prisma generate to generate the Prisma Client. You can then start querying your database.
+
+// npx prisma migrate dev
+
+//Run prisma db pull to turn your database schema into a Prisma schema
