@@ -14,13 +14,15 @@ async function getUserBalance(): Promise<{
 
   try {
     const transactions = await db.transaction.findMany({
-      where: { userId },
+      where: { userId },  // samr name userId in db and from userId clerk above const { userId } = auth();
     });
 
-    const balance = transactions.reduce(
+    const balance = transactions.reduce(  // take function
       (sum, transaction) => sum + transaction.amount,
-      0
+      0   // starting point 
     );
+
+    
 
     return { balance };
   } catch (error) {
