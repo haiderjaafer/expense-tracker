@@ -1,42 +1,25 @@
-'use client';
+import getTransactions from '@/app/actions/getTransactions';
+import TransactionItem from './TransactionItem';
 import { Transaction } from '@/types/Transaction';
-import { addCommas } from '@/lib/utils';
-import { toast } from 'react-toastify';
-import deleteTransaction from '@/app/actions/deleteTransaction';
 
-const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
-  const sign = transaction.amount < 0 ? '-' : '+';
+const TransactionList = async () => {
+  const { transactions, error } = await getTransactions();
 
-  const handleDeleteTransaction = async (transactionId: string) => {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete this transaction?'
-    );
-
-    if (!confirmed) return;
-
-    const { message, error } = await deleteTransaction(transactionId);
-
-    if (error) {
-      toast.error(error);
-    }
-
-    toast.success(message);
-  };
+  if (error) {
+    return <p className='error'>{error}</p>;
+  }
 
   return (
-    <li className={transaction.amount < 0 ? 'minus' : 'plus'}>
-      {transaction.text}
-      <span>
-        {sign}${addCommas(Math.abs(transaction.amount))}
-      </span>
-      <button
-        onClick={() => handleDeleteTransaction(transaction.id)}
-        className='delete-btn'
-      >
-        x
-      </button>
-    </li>
+    <>
+      <h3>History</h3>
+      <ul className='list'>
+        {transactions &&
+          transactions.map((transaction: Transaction) => (
+            <TransactionItem key={transaction.id} transaction={transaction} />
+          ))}
+      </ul>
+    </>
   );
 };
 
-export default TransactionItem;
+export default TransactionList;
