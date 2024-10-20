@@ -13,9 +13,9 @@ const TransactionList = async () => {
     <>
       <h3>History</h3>
       <ul className='list'>
-        {transactions &&
+        {transactions &&                         // if transactions id truthy 
           transactions.map((transaction: Transaction) => (
-            <TransactionItem key={transaction.id} transaction={transaction} />
+            <TransactionItem key={transaction.id} transaction={transaction} />   // this will represent single TransactionItem 
           ))}
       </ul>
     </>
